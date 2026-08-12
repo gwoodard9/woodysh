@@ -1,0 +1,1 @@
+int stringify(char* argv[], int input_count);
