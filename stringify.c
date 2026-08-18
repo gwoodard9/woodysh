@@ -15,10 +15,6 @@ int stringify(char* argv[], int count) {
 		return 1;
 	}
 
-	for (int i = 0; i < input_count; i++) {
-		printf("%p\n", &strings[i]);
-	}
-
 	free(strings);
 
 	return 0;

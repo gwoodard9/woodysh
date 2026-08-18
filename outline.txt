@@ -1,0 +1,16 @@
+You should start by choosing what kind of subset of a shell you're planning to implement. By the level of the question, I'm guessing it's mostly the simple interactive stuff, 
+maybe running commands, piping and redirecting input/output.
+
+That level is quite straightforward, at least for majority of use cases. Steps, more or less:
+
+√   1. get a line of input (for example getline or libreadline)
+
+√   2. tokenize the line of input (commands, arguments, redirections, pipes)
+
+-   3. open pipe(s) / file(s)
+
+x   4. execute commands
+
+x   5. wait
+
+Making a full-blown shell with proper scriptability is a huge undertaking.
