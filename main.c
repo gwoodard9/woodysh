@@ -1,9 +1,11 @@
 #include "parser.h"
+#include "stringify.h"
 #include <stdio.h>
 #include <string.h>
 
 int main() {
 	char line[256];
+	char* argv[32];
 
 	while (1) {
 		printf("woodysh> ");
@@ -19,6 +21,8 @@ int main() {
 		if (strcmp(line, "exit") == 0) {
 			break;
 		}
+		int count = parse(line, argv);
+		stringify(argv, count);
 	}
 
 	return 0;
