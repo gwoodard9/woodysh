@@ -14,3 +14,9 @@ x   4. execute commands
 x   5. wait
 
 Making a full-blown shell with proper scriptability is a huge undertaking.
+
+How it Works in a Shell:
+The shell waits for user input.
+The shell calls fork() to make a child process.
+The child process calls execve() to run the command like ls or cat.
+The parent shell calls wait() so it pauses until the child command finishes.

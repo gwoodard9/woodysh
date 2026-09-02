@@ -1,5 +1,5 @@
+#include "create_fork.h"
 #include "parser.h"
-#include "stringify.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -22,7 +22,8 @@ int main() {
 			break;
 		}
 		int count = parse(line, argv);
-		stringify(argv, count);
+
+		create_fork(argv, count);
 	}
 
 	return 0;
