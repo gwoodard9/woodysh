@@ -28,7 +28,6 @@ void parse(char** strArr, char* buffer, char* input) {
 		}
 
 		strcpy(strArr[i], token);
-
 		i++;
 	}
 
@@ -61,7 +60,15 @@ int main() {
 
 		char* input = fgets(buffer, BUFFER_SIZE, stdin);
 		parse(strArr, buffer, input);
-		execute(strArr);
+
+		if (strcmp(strArr[0], "cd") == 0) {
+			if (strArr[1] == NULL) {
+				chdir(getenv("HOME"));
+			}
+			chdir(strArr[1]);
+		} else {
+			execute(strArr);
+		}
 
 		for (int j = 0; strArr[j] != NULL; j++) {
 			free(strArr[j]);
