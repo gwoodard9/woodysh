@@ -1,6 +1,9 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #define MAX_STRINGS 32
 #define BUFFER_SIZE 100
@@ -15,8 +18,8 @@ void parse(char** strArr, char* buffer, char* input) {
 		buffer[len - 1] = '\0';
 
 	int i = 0;
-	for (char* token = strtok(buffer, " "); token != NULL && i < MAX_STRINGS;
-		 token = strtok(NULL, " ")) {
+	for (char* token = strtok(buffer, " ");
+		 token != NULL && i < MAX_STRINGS - 1; token = strtok(NULL, " ")) {
 
 		strArr[i] = malloc(strlen(token) + 1);
 
@@ -25,24 +28,44 @@ void parse(char** strArr, char* buffer, char* input) {
 		}
 
 		strcpy(strArr[i], token);
-		printf("%s", token);
 
 		i++;
 	}
 
-	for (int j = 0; j < i; j++) {
-		free(strArr[j]);
+	strArr[i] = NULL;
+}
+
+void execute(char** strArr) {
+	pid_t pid = fork();
+
+	if (pid == 0) {
+		execvp(strArr[0], strArr);
+	} else {
+		waitpid(pid, NULL, 0);
 	}
+	printf("\n");
 }
 
 int main() {
 	char* strArr[MAX_STRINGS];
 	char buffer[BUFFER_SIZE];
+	char cwd[PATH_MAX];
 
 	while (1) {
-		printf("\nwoodysh> ");
+		if (getcwd(cwd, sizeof(cwd)) != NULL) {
+			printf("woodysh ~%s> ", cwd);
+		} else {
+			printf("cwd returned NULL.");
+			return 0;
+		}
+
 		char* input = fgets(buffer, BUFFER_SIZE, stdin);
 		parse(strArr, buffer, input);
+		execute(strArr);
+
+		for (int j = 0; strArr[j] != NULL; j++) {
+			free(strArr[j]);
+		}
 	}
 
 	return 0;
